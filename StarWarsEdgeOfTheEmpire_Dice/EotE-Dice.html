@@ -1,7 +1,8 @@
-
-<input type="radio" name="attr_pcgm" class="sheet-tab sheet-tab-character-sheet" value="1" title="Character Sheet" checked="checked" />
-<input type="radio" name="attr_pcgm" class="sheet-tab sheet-tab-ship-sheet" value="2" title="Ship Sheet" />
-<input type="radio" name="attr_pcgm" class="sheet-tab sheet-tab-gm-dice" value="3" title="GM Dice" />
+<input type="radio" name="attr_gmdicepool" class="sheet-player" value="1" checked="checked" style="display:none">
+<input type="radio" name="attr_gmdicepool" class="sheet-gm" value="2" style="display:none">
+<input type="radio" name="attr_pcgm" class="sheet-tab sheet-tab-character-sheet sheet-player-sheet" value="1" title="Character Sheet" checked="checked" />
+<input type="radio" name="attr_pcgm" class="sheet-tab sheet-tab-ship-sheet sheet-player-sheet" value="2" title="Vehicle Sheet" />
+<input type="radio" name="attr_pcgm" class="sheet-tab sheet-tab-gm-dice sheet-gm-sheet" value="3" title="GM Dice" />
          
 <div class="sheet-tab-content sheet-tab-character-sheet"><!-- PC Character Sheet -->
     <div class="sheet-row sheet-section-1">
@@ -10,11 +11,7 @@
             <table class="sheet-swsd" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
-                        <td>
-                            <label class="sheet-label-title">Soak</label>
-                            <input name="attr_soak" type="number" max="99" min="-99" value="0"/>
-                        </td>
-                        <td></td>
+                        
                         <td>
                             <label class="sheet-label-title">Wounds</label>
                             <input name="attr_wounds_max" type="number" max="99" min="-99" value="0"/>
@@ -22,7 +19,6 @@
                             <label class="sheet-label-threshold">Threshold</label>
                             <label class="sheet-label-current">Current</label>
                         </td>
-                        <td></td>
                         <td>
                             <label class="sheet-label-title">Strain</label>
                             <input name="attr_strain_max" type="number" max="99" min="-99" value="0"/>
@@ -30,23 +26,37 @@
                             <label class="sheet-label-threshold">Threshold</label>
                             <label class="sheet-label-current">Current</label>    
                         </td>
-                        <td></td>
-                        <td>
+                        <td  rowspan="2">
                             <label class="sheet-label-title">Defense</label>
                             <input name="attr_rangeddefense" type="number" max="99" min="-99" value="0"/>
                             <input name="attr_meleedefense" type="number" max="99" min="-99" value="0"/><br/>
                             <label class="sheet-label-range">Range</label>
                             <label class="sheet-label-melee">Melee</label> 
                         </td>
-                        <td></td>
-                        <td>
+                        <td  rowspan="2">
                             <label class="sheet-label-title">Encum</label>
                             <input name="attr_encumbrance_max" type="number" max="99" min="-99" value="0"/>
-                            <input name="attr_encumbrancemax" type="hidden" value="@(encumbrance|max)" disabled="true"/>
+                            <input name="attr_encumbrancemax" type="hidden" value="@{encumbrance|max}" disabled="true"/>
                             <input name="attr_encumbrance" type="number" max="99" min="-99" value="0"/><br/>
                             <label class="sheet-label-threshold">Threshold</label>
                             <label class="sheet-label-current">Current</label>      
                         </td>
+                        
+                        <td rowspan="2">
+                            <label class="sheet-label-title">Force Rating</label>
+                            <input name="attr_forcerating" type="number" max="99" min="0" value="0"/>
+                            <input name="attr_forcecommitted" type="number" max="99" min="0" value="0"/><br/>
+                            <label class="sheet-label-threshold">Threshold</label>
+                            <label class="sheet-label-current">Committed</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label class="sheet-label-title">Soak</label>
+                            <input name="attr_soak" type="number" max="99" min="-99" value="0"/>
+                        </td>
+                       
+                       
                     </tr>
                 </tbody>
             </table>
@@ -81,8 +91,9 @@
                         <td class="sheet-force">
                                 
                             <input type="hidden" name="attr_dicePool"  value=" @{g}g @{y}y @{p}p @{r}r @{b}b @{blk}blk @{w}w upgrade(ability|@{upgradeAbility}) downgrade(proficiency|@{downgradeProficiency}) upgrade(difficulty|@{upgradeDifficulty}) downgrade(challenge|@{downgradeChallenge})"/>
-                            <button type='roll' name='roll_DicePool' value='!eed characterID(@{characterID}) label(Dice Pool) @{dicePool} @{-dicepool|dicepoolgm}'></button>
-                                
+                            <button type='roll' name='roll_DicePool' value='!eed characterID(@{character_id}) label(Dice:Dice Pool) @{dicePool} (gmdice)'></button>
+                            <button type='roll' name='roll_ResetDicePool' value='!eed resetdice characterID(@{character_id})'></button>
+
                         </td>
                         <td colspan="3" class="sheet-downgrade sheet-dark">
                             <label>&nbsp;&nbsp;&nbsp;&nbsp;Upgrade:
@@ -109,6 +120,7 @@
     <input type="radio" name="attr_sheet" class="sheet-tab sheet-tab-skills" value="2" title="Skills" />
     <input type="radio" name="attr_sheet" class="sheet-tab sheet-tab-talents" value="3" title="Talents" />
     <input type="radio" name="attr_sheet" class="sheet-tab sheet-tab-weapons" value="4" title="Weapons & Gear" />
+    <input type="radio" name="attr_sheet" class="sheet-tab sheet-tab-notes" value="5" title="Notes" />
     
 
             <div class="sheet-tab-content sheet-tab-character">
@@ -266,7 +278,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn1})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn1})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -301,7 +313,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn2})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn2})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -336,7 +348,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn3})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn3})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -371,7 +383,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn4})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn4})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -406,7 +418,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn5})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn5})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -441,7 +453,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn6})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn6})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -476,7 +488,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn7})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn7})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -511,7 +523,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn8})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn8})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -546,7 +558,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn9})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn9})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -581,7 +593,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn10})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn10})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -616,7 +628,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn11})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn11})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -651,7 +663,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn12})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn12})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -686,7 +698,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn13})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn13})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -721,7 +733,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn14})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn14})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -756,7 +768,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{characterID}) crit(heal|@{critOn15})" />Heal</button>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) crit(heal|@{critOn15})" />Heal</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -769,8 +781,16 @@
                         <table  class="sheet-roll-critical" cellspacing="0" cellpadding="0" border="0">
                             <tbody>
                                 <tr>
+                                    <td>
+                                        <label>Critcal roll offset:</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="attr_critAddOffset" value="" />
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td colspan="2">
-                                        <button type="roll" class="sheet-btn-roll-crit" value="!eed characterID(@{characterID}) crit(roll)" />Roll Critical</button>
+                                        <button type="roll" class="sheet-btn-roll-crit" value="!eed characterID(@{character_id}) crit(roll)" />Roll Critical</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -779,7 +799,7 @@
                                         <input type="text" name="attr_critAddRangeNum" value="" />
                                     </td>
                                     <td valign="bottom">
-                                        <button type="roll" class="sheet-btn-add-crit" value="!eed characterID(@{characterID}) crit(add|@{critAddRangeNum})" />Add Critical</button>
+                                        <button type="roll" class="sheet-btn-add-crit" value="!eed characterID(@{character_id}) crit(add|@{critAddRangeNum})" />Add Critical</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -827,13 +847,13 @@
                                     <td><label>Type:</label></td>
                                     <td><input type="text" name="attr_obligationtype1"/></td>
                                     <td><label>Magnitude:</label></td>
-                                    <td class="sheet-div-right"><input type="number" name="attr_obligationmag1"/></td>
+                                    <td><input type="number" name="attr_obligationmag1"/></td>
                                     <td><label>Type:</label></td>
                                     <td><input type="text" name="attr_obligationtype2"/></td>
                                     <td><label>Magnitude:</label></td>
                                     <td><input type="number" name="attr_obligationmag2"/></td>
                                 </tr>
-                                 <tr>
+                                <tr>
                                     <td><label>Complications:</label></td>
                                     <td colspan="3" class="sheet-div-right"><textarea rows="3" name="attr_obligationcomp1"></textarea></td>
                                     <td><label>Complications:</label></td>
@@ -841,6 +861,111 @@
                                 </tr>
                             </tbody>
                         </table>
+                        
+                        <fieldset class="repeating_obligation">
+                            <table  cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td><label>Type:</label></td>
+                                        <td><input type="text" name="attr_obligationtype3"/></td>
+                                        <td><label>Magnitude:</label></td>
+                                        <td><input type="number" name="attr_obligationmag3"/></td>
+                                        <td><label>Type:</label></td>
+                                        <td><input type="text" name="attr_obligationtype4"/></td>
+                                        <td><label>Magnitude:</label></td>
+                                        <td><input type="number" name="attr_obligationmag4"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Complications:</label></td>
+                                        <td colspan="3" class="sheet-div-right"><textarea rows="3" name="attr_obligationcomp3"></textarea></td>
+                                        <td><label>Complications:</label></td>
+                                        <td colspan="3"><textarea rows="3" name="attr_obligationcomp4"></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                        
+                        <table  cellspacing="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th colspan="8">Duty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="sheet-bg-blue">
+                                    <td colspan="4"><label style="text-align:right">Group's Contribution Rank:</label></td>
+                                    <td colspan="4"><input type="number" name="attr_contributionRank"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Type:</label></td>
+                                    <td><input type="text" name="attr_dutytype1"/></td>
+                                    <td><label>Magnitude:</label></td>
+                                    <td><input type="number" name="attr_dutymag1"/></td>
+                                    <td><label>Type:</label></td>
+                                    <td><input type="text" name="attr_dutytype2"/></td>
+                                    <td><label>Magnitude:</label></td>
+                                    <td><input type="number" name="attr_dutymag2"/></td>
+                                </tr>
+            					<tr>
+                                        <td><label>Description:</label></td>
+                                        <td colspan="3" class="sheet-div-right"><textarea rows="3" name="attr_dutydesc1"></textarea></td>
+                                        <td><label>Description:</label></td>
+                                        <td colspan="3"><textarea rows="3" name="attr_dutydesc2"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <fieldset class="repeating_duty">
+                            <table  cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td><label>Type:</label></td>
+                                        <td><input type="text" name="attr_dutytype3"/></td>
+                                        <td><label>Magnitude:</label></td>
+                                        <td class="sheet-div-right"><input type="number" name="attr_dutymag3"/></td>
+                                        <td><label>Type:</label></td>
+                                        <td><input type="text" name="attr_dutytype4"/></td>
+                                        <td><label>Magnitude:</label></td>
+                                        <td><input type="number" name="attr_dutymag4"/></td>
+                                    </tr>
+									<tr>
+                                        <td><label>Description:</label></td>
+                                        <td colspan="3" class="sheet-div-right"><textarea rows="3" name="attr_dutydesc3"></textarea></td>
+                                        <td><label>Description:</label></td>
+                                        <td colspan="3"><textarea rows="3" name="attr_dutydesc4"></textarea></td>
+									</tr>
+                                </tbody>
+                            </table>
+                        </fieldset>
+                        
+                        <table  cellspacing="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th colspan="4">Morality</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><label>Conflict:</label></td>
+                                    <td><input type="number" name="attr_conflict"/></td>
+                                    <td><label>Morality:</label></td>
+                                    <td><input type="number" name="attr_morality"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label>Emotional Strength:</label></td>
+                                    <td><input type="text" name="attr_emotestrengt"/></td>
+                                    <td><label>Emotional Weakness:</label></td>
+                                    <td><input type="text" name="attr_emoteweakness"/></td>
+                                </tr>
+								<tr>
+                                    <td><label>Description:</label></td>
+                                    <td><textarea rows="3" name="attr_emotestrengthdesc"></textarea></td>
+                                    <td><label>Description:</label></td>
+                                    <td><textarea rows="3" name="attr_emoteweaknessdec"></textarea></td>
+								</tr>
+                            </tbody>
+                        </table>
+                        </fieldset>
                         
                     </div> <!-- end sheet-column -->
                     <div class="sheet-clear"></div>
@@ -908,6 +1033,36 @@
                         
                         <h3 class="sheet-section-header">Skills</h3>
                         
+                        <table class="sheet-init" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td><label>Initiative Cool (if prepared):</label></td>
+                                <td>
+                                    <input class="sheet-yd" type="hidden" name="attr_yCoolInit" value="(((@{presence} + @{rankCool}) - abs(@{presence} - @{rankCool})) / 2)" disabled="true" ><span></span>
+                                    <input class="sheet-gd" type="hidden" name="attr_gCoolInit" value="((((@{presence} + @{rankCool}) + abs(@{presence} - @{rankCool})) / 2) - @{yCoolInit})" disabled="true" ><span></span>
+                                </td>
+                                <td>
+                                    <button type='roll' name='roll_VigilanceInit' value='!eed @{npc-pc} characterID(@{character_id}) label(skill:Initiative Cool) skill(@{rankCool}|@{presence}) @{dicePool}'></button>
+                                </td>
+                                <td><label>Initiative Vigilance (if unexpected):</label></td>
+                                <td>
+                                    <input class="sheet-yd" type="hidden" name="attr_yVigilanceInit" value="(((@{willpower} + @{rankVigilance}) - abs(@{willpower} - @{rankVigilance})) / 2)" disabled="true" ><span></span>
+                                    <input class="sheet-gd" type="hidden" name="attr_gVigilanceInit" value="((((@{willpower} + @{rankVigilance}) + abs(@{willpower} - @{rankVigilance})) / 2) - @{yVigilanceInit})" disabled="true" ><span></span>
+                                </td>
+                                <td>
+                                    <button type='roll' name='roll_VigilanceInit' value='!eed @{npc-pc} characterID(@{character_id}) label(skill:Initiative Vigilance) skill(@{rankVigilance}|@{willpower}) @{dicePool}'></button>
+                                </td> 
+                                <td>
+                                    <label>PC
+                                    <input type="radio" name="attr_npc-pc" value="pcinit" checked="checked"/>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label>NPC
+                                    <input type="radio" name="attr_npc-pc" value="npcinit"/>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
                         <table class="sheet-skills" cellspacing="0" cellpadding="0" border="0">
                             <thead>
                                 <tr>
@@ -921,7 +1076,7 @@
                                                     <div class="sheet-icon">
                                                         <span class="sheet-icon-question">?</span>
                                                     </div>
-                                                    <div class="sheet-help-content">
+                                                    <div class="sheet-help-content" style="margin-left:-225px">
                                                         <h5>Adding Dice</h5>
                                                         <p>To add additional dice write
                                                         the number of dice and color
@@ -1041,7 +1196,7 @@
                                             <input type="text" name="attr_diceAstrogation" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Astrogation' value='!eed characterID(@{characterID}) label(Astrogation) @{diceAstrogation} skill(@{rankAstrogation}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Astrogation' value='!eed characterID(@{character_id}) label(skill:Astrogation) @{diceAstrogation} skill(@{rankAstrogation}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Athletics (Br)</label>
@@ -1053,9 +1208,9 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Overview (p71)</h5>
                                                     <ul>
-                                                        <li>Climb – including rappel or swing on a line – difficulty determined by surface and weather conditions.</li>
-                                                        <li>Swim – difficulty determined by water conditions (waves, currents and tides).</li>
-                                                        <li>Jump horizontally or vertically – difficulty determined by gravitational conditions and distance required.</li>
+                                                        <li>Climb - including rappel or swing on a line - difficulty determined by surface and weather conditions.</li>
+                                                        <li>Swim - difficulty determined by water conditions (waves, currents and tides).</li>
+                                                        <li>Jump horizontally or vertically - difficulty determined by gravitational conditions and distance required.</li>
                                                         <li>Push movement to a longer speed or run for an extended time.</li>
                                                     </ul>
                                                 </div>
@@ -1133,7 +1288,7 @@
                                             <input type="text" name="attr_diceAthletics" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Athletics' value='!eed characterID(@{characterID}) label(Athletics) @{diceAthletics} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankAthletics}|@{brawn}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Athletics' value='!eed characterID(@{character_id}) label(skill:Athletics) @{diceAthletics} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankAthletics}|@{brawn}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Charm (Pr)</label>
@@ -1146,7 +1301,7 @@
                                                     <h5>Overview (p72)</h5>
                                                     <ul>
                                                         <li>Persuade an individual to make a special exception to usual practices through flattery, flirting and grace.</li>
-                                                        <li>Appeal to an individual’s better nature, requiring them to go out of their way to aid the characters without any hope of remuneration.</li>
+                                                        <li>Appeal to an individual's better nature, requiring them to go out of their way to aid the characters without any hope of remuneration.</li>
                                                         <li>Sincere seduction attempts (use Deceit when interest is feigned).</li>
                                                     </ul>
                                                 </div>
@@ -1221,7 +1376,7 @@
                                             <input type="text" name="attr_diceCharm" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Charm' value='!eed characterID(@{characterID}) label(Charm) @{diceCharm} skill(@{rankCharm}|@{presence}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Charm' value='!eed characterID(@{character_id}) label(skill:Charm) @{diceCharm} skill(@{rankCharm}|@{presence}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Coercion (Will)</label>
@@ -1309,7 +1464,7 @@
                                             <input type="text" name="attr_diceCoercion" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Coercion' value='!eed characterID(@{characterID}) label(Coercion) @{diceCoercion} skill(@{rankCoercion}|@{willpower}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Coercion' value='!eed characterID(@{character_id}) label(skill:Coercion) @{diceCoercion} skill(@{rankCoercion}|@{willpower}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Computers (Int)</label>
@@ -1324,7 +1479,7 @@
                                                         <li>Open a locked door, control an elevator or bypass a security system.</li>
                                                         <li>Search through records, particularly if encrypted.</li>
                                                         <li>Investigate what actions a slicer might have taken against a computer system.</li>
-                                                        <li>Alter a droid’s programming or gain access to its memories.</li>
+                                                        <li>Alter a droid's programming or gain access to its memories.</li>
                                                         <li>Recover data from a system that has suffered physical damage.</li>
                                                     </ul>
                                                 </div>
@@ -1358,7 +1513,7 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Per Triumph</h5>
                                                     <ul>
-                                                        <li>Obfuscate actions taken –add <span class="sheet-icon-R"></span> to any check to detect or identify the characters actions.</li>
+                                                        <li>Obfuscate actions taken -add <span class="sheet-icon-R"></span> to any check to detect or identify the characters actions.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -1393,7 +1548,7 @@
                                                         sliced. Add <span class="sheet-icon-B"></span> to the check of
                                                         any NPC using the target
                                                         system to slice the
-                                                        character’s system.</li>
+                                                        character's system.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -1412,7 +1567,7 @@
                                             <input type="text" name="attr_diceComputers" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Computers' value='!eed characterID(@{characterID}) label(Computers) @{diceComputers} skill(@{rankComputers}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Computers' value='!eed characterID(@{character_id}) label(skill:Computers) @{diceComputers} skill(@{rankComputers}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Cool (Pr)</label>
@@ -1500,7 +1655,7 @@
                                             <input type="text" name="attr_diceCool" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Cool' value='!eed characterID(@{characterID}) label(Cool) @{diceCool} skill(@{rankCool}|@{presence}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Cool' value='!eed characterID(@{character_id}) label(skill:Cool) @{diceCool} skill(@{rankCool}|@{presence}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Coordination (Ag)</label>
@@ -1591,7 +1746,7 @@
                                             <input type="text" name="attr_diceCoordination" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Coordination' value='!eed characterID(@{characterID}) label(Coordination) @{diceCoordination} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankCoordination}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Coordination' value='!eed characterID(@{character_id}) label(skill:Coordination) @{diceCoordination} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankCoordination}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Deception (Cun)</label>
@@ -1638,7 +1793,7 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Per Triumph</h5>
                                                     <ul>
-                                                        <li>Fool the target into believing the character is trustworthy – future Deceit checks against target do not require an opposed check.</li>
+                                                        <li>Fool the target into believing the character is trustworthy - future Deceit checks against target do not require an opposed check.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -1679,7 +1834,7 @@
                                             <input type="text" name="attr_diceDeception" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Deception' value='!eed characterID(@{characterID}) label(Deception) @{diceDeception} skill(@{rankDeception}|@{cunning}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Deception' value='!eed characterID(@{character_id}) label(skill:Deception) @{diceDeception} skill(@{rankDeception}|@{cunning}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Discipline (Will)</label>
@@ -1768,7 +1923,7 @@
                                             <input type="text" name="attr_diceDiscipline" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Discipline' value='!eed characterID(@{characterID}) label(Discipline) @{diceDiscipline} skill(@{rankDiscipline}|@{willpower}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Discipline' value='!eed characterID(@{character_id}) label(skill:Discipline) @{diceDiscipline} skill(@{rankDiscipline}|@{willpower}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Leadership (Pr)</label>
@@ -1839,14 +1994,14 @@
                                                     <h5>Per Despair</h5>
                                                     <ul>
                                                         <li>Undermine the
-                                                        character’s authority,
+                                                        character's authority,
                                                         damaging the characters
                                                         ability to command target or
                                                         those who witnessed the
                                                         attempt.</li>
                                                         <li>With multiple <span class="sheet-icon-Des"></span> target may
                                                         become a recurring thorn in
-                                                        the character’s side,
+                                                        the character's side,
                                                         refusing future orders or
                                                         turning others against the
                                                         character.</li>
@@ -1868,7 +2023,7 @@
                                             <input type="text" name="attr_diceLeadership" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Leadership' value='!eed characterID(@{characterID}) label(Leadership) @{diceLeadership} skill(@{rankLeadership}|@{presence}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Leadership' value='!eed characterID(@{character_id}) label(skill:Leadership) @{diceLeadership} skill(@{rankLeadership}|@{presence}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Mechanics (Int)</label>
@@ -1965,7 +2120,7 @@
                                             <input type="text" name="attr_diceMechanics" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Mechanics' value='!eed characterID(@{characterID}) label(Mechanics) @{diceMechanics} skill(@{rankMechanics}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Mechanics' value='!eed characterID(@{character_id}) label(skill:Mechanics) @{diceMechanics} skill(@{rankMechanics}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Medicine (Int)</label>
@@ -1980,7 +2135,7 @@
                                                         <li>Apply routine first aid, including medpacs.</li>
                                                         <li>Treat or inflict a poison, pharmaceutical or recreational drug.</li>
                                                         <li>Identify symptoms and treatment for infectious diseases and parasites.</li>
-                                                        <li>More serious treatment – including surgery, cybernetic augmentation and psychotherapy, provided necessary pharmaceuticals and medical instruments are available.</li>
+                                                        <li>More serious treatment - including surgery, cybernetic augmentation and psychotherapy, provided necessary pharmaceuticals and medical instruments are available.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -2056,7 +2211,7 @@
                                             <input type="text" name="attr_diceMedicine" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Medicine' value='!eed characterID(@{characterID}) label(Medicine) @{diceMedicine} skill(@{rankMedicine}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Medicine' value='!eed characterID(@{character_id}) label(skill:Medicine) @{diceMedicine} skill(@{rankMedicine}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Negotiation (Pr)</label>
@@ -2081,7 +2236,7 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Per Additional Success</h5>
                                                     <ul>
-                                                        <li>Increase acting character’s profit by 5%.</li>
+                                                        <li>Increase acting character's profit by 5%.</li>
                                                         <li>Modify scope of agreement.</li>
                                                     </ul>
                                                 </div>
@@ -2147,7 +2302,7 @@
                                             <input type="text" name="attr_diceNegotiation" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Negotiation' value='!eed characterID(@{characterID}) label(Negotiation) @{diceNegotiation} skill(@{rankNegotiation}|@{presence}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Negotiation' value='!eed characterID(@{character_id}) label(skill:Negotiation) @{diceNegotiation} skill(@{rankNegotiation}|@{presence}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Perception (Cun)</label>
@@ -2161,7 +2316,7 @@
                                                     <ul>
                                                         <li>Detect a trap or ambush, prior to falling prey to the assault.</li>
                                                         <li>Detect a disguised individual, when not actively looking.</li>
-                                                        <li>Notice a subtle clue – overheard conversation, the stink of a Jawa, drug introduced to beverage.</li>
+                                                        <li>Notice a subtle clue - overheard conversation, the stink of a Jawa, drug introduced to beverage.</li>
                                                         <li>Accidently notice subtly hidden objects, such as the latch securing a smuggling compartment.</li>
                                                     </ul>
                                                 </div>
@@ -2236,7 +2391,7 @@
                                             <input type="text" name="attr_dicePerception" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Perception' value='!eed characterID(@{characterID}) label(Perception) @{dicePerception} skill(@{rankPerception}|@{cunning}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Perception' value='!eed characterID(@{character_id}) label(skill:Perception) @{dicePerception} skill(@{rankPerception}|@{cunning}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Piloting - Planetary (Ag)</label>
@@ -2249,7 +2404,7 @@
                                                     <h5>Overview (p78)</h5>
                                                     <ul>
                                                         <li>Decipher basic controls of completely foreign type of atmospheric craft.</li>
-                                                        <li>Determine results of a race upon a world’s surface.</li>
+                                                        <li>Determine results of a race upon a world's surface.</li>
                                                         <li>Maintain a tail or lose a chaser.</li>
                                                         <li>Navigate through a familiar environment, representing knowledge of typical traffic patterns.</li>
                                                     </ul>
@@ -2274,7 +2429,7 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Per Advantage</h5>
                                                     <ul>
-                                                        <li>Reveal vulnerability in opponent’s piloting style or vehicle, giving benefit in later rounds.</li>
+                                                        <li>Reveal vulnerability in opponent's piloting style or vehicle, giving benefit in later rounds.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -2326,7 +2481,7 @@
                                             <input type="text" name="attr_dicePlanetary" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Planetary' value='!eed characterID(@{characterID}) label(Piloting - Planetary) @{dicePlanetary} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankPlanetary}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Planetary' value='!eed characterID(@{character_id}) label(skill:Piloting - Planetary) @{dicePlanetary} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankPlanetary}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Piloting - Space (Ag)</label>
@@ -2363,7 +2518,7 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Per Advantage</h5>
                                                     <ul>
-                                                        <li>Reveal vulnerability in opponent’s piloting style or vehicle, giving benefit in later rounds.</li>
+                                                        <li>Reveal vulnerability in opponent's piloting style or vehicle, giving benefit in later rounds.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -2415,7 +2570,7 @@
                                             <input type="text" name="attr_diceSpace" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Space' value='!eed characterID(@{characterID}) label(Piloting - Space) @{diceSpace} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankSpace}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Space' value='!eed characterID(@{character_id}) label(skill:Piloting - Space) @{diceSpace} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankSpace}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Resilience (Br)</label>
@@ -2429,7 +2584,7 @@
                                                     <ul>
                                                         <li>Go without sleep for significantly longer than is healthy for species.</li>
                                                         <li>Resist the effects of a toxin.</li>
-                                                        <li>Endure prolonged exposure to a hostile environment – including heat, cold or toxic pollution.</li>
+                                                        <li>Endure prolonged exposure to a hostile environment - including heat, cold or toxic pollution.</li>
                                                         <li>Resist the effects of dehydration and malnutrition.</li>
                                                     </ul>
                                                 </div>
@@ -2504,7 +2659,7 @@
                                             <input type="text" name="attr_diceResilience" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Resilience' value='!eed characterID(@{characterID}) label(Resilience) @{diceResilience} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankResilience}|@{brawn}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Resilience' value='!eed characterID(@{character_id}) label(skill:Resilience) @{diceResilience} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankResilience}|@{brawn}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Skulduggery (Cun)</label>
@@ -2593,7 +2748,7 @@
                                             <input type="text" name="attr_diceSkulduggery" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Skulduggery' value='!eed characterID(@{characterID}) label(Skulduggery) @{diceSkulduggery} skill(@{rankSkulduggery}|@{cunning}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Skulduggery' value='!eed characterID(@{character_id}) label(skill:Skulduggery) @{diceSkulduggery} skill(@{rankSkulduggery}|@{cunning}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Stealth (Ag)</label>
@@ -2606,7 +2761,7 @@
                                                     <h5>Overview (p80)</h5>
                                                     <ul>
                                                         <li>Blend in with a crowd, hiding by acting as though you belong.</li>
-                                                        <li>Hide from an opponent’s senses, modified by ambient conditions and applicable gear.</li>
+                                                        <li>Hide from an opponent's senses, modified by ambient conditions and applicable gear.</li>
                                                         <li>Hide people or objects from the attentions of others, either through concealment or misdirection.</li>
                                                     </ul>
                                                 </div>
@@ -2681,7 +2836,7 @@
                                             <input type="text" name="attr_diceStealth" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Stealth' value='!eed characterID(@{characterID}) label(Stealth) @{diceStealth} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankStealth}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Stealth' value='!eed characterID(@{character_id}) label(skill:Stealth) @{diceStealth} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankStealth}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Streetwise (Cun)</label>
@@ -2769,7 +2924,7 @@
                                             <input type="text" name="attr_diceStreetwise" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Streetwise' value='!eed characterID(@{characterID}) label(Streetwise) @{diceStreetwise} skill(@{rankStreetwise}|@{cunning}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Streetwise' value='!eed characterID(@{character_id}) label(skill:Streetwise) @{diceStreetwise} skill(@{rankStreetwise}|@{cunning}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Survival (Cun)</label>
@@ -2783,7 +2938,7 @@
                                                     <ul>
                                                         <li>Identify safe food, potable water or shelter in a natural environment.</li>
                                                         <li>Understand weather patterns. Recognise the signs of imminent dangerous conditions and know the best way to prepare.</li>
-                                                        <li>Track a subject through the wilderness – whether game or bounty.</li>
+                                                        <li>Track a subject through the wilderness - whether game or bounty.</li>
                                                         <li>Handle domesticated animals, so they may be used as beasts of burden or transport.</li>
                                                     </ul>
                                                 </div>
@@ -2861,7 +3016,7 @@
                                             <input type="text" name="attr_diceSurvival" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Survival' value='!eed characterID(@{characterID}) label(Survival) @{diceSurvival} skill(@{rankSurvival}|@{cunning}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Survival' value='!eed characterID(@{character_id}) label(skill:Survival) @{diceSurvival} skill(@{rankSurvival}|@{cunning}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Vigilance (Will)</label>
@@ -2949,7 +3104,7 @@
                                             <input type="text" name="attr_diceVigilance" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Vigilance' value='!eed characterID(@{characterID}) label(Vigilance) @{diceVigilance} skill(@{rankVigilance}|@{willpower}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Vigilance' value='!eed characterID(@{character_id}) label(skill:Vigilance) @{diceVigilance} skill(@{rankVigilance}|@{willpower}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -2968,6 +3123,47 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td valign="middle"><label>Lightsaber</label>
+                                        <div class="sheet-tips" style="display:none">
+                                            <div class="sheet-help-def sheet-help">
+                                                <div class="sheet-icon">
+                                                    <span class="sheet-icon-question">?</span>
+                                                </div>
+                                                <div class="sheet-help-content">
+                                                    <h5>Overview</h5>
+                                                    <ul>
+                                                        <li>-------------------</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div><!-- end tip -->
+                                        
+                                        <select name="attr_charLightsaber" style="float:right; width:50%">
+                                            <option value="@{brawn}">Brawn</option><!-- encum not working -->
+                                            <option value="@{agility}">Agility</option>
+                                            <option value="@{intellect}">Intellect</option>
+                                            <option value="@{cunning}">Cunning</option>
+                                            <option value="@{willpower}">Willpower</option>
+                                            <option value="@{presence}">Presence</option>
+                                        </select>
+                                        
+                                    </td>
+                                    <td><input name='attr_careerskillLightsaber' type="checkbox" value="1"></td>
+                                    
+                                    <td><input type="number" name="attr_rankLightsaber" max="9" min="0" value="0" /></td>
+                                    <td>
+                                        <input class="sheet-yd" type="hidden" name="attr_yLightsaber" value="(((@{charLightsaber} + @{rankLightsaber}) - abs(@{charLightsaber} - @{rankLightsaber})) / 2)" disabled="true" ><span></span>
+                                        <input class="sheet-gd" type="hidden" name="attr_gLightsaber" value="((((@{charLightsaber} + @{rankLightsaber}) + abs(@{charLightsaber} - @{rankLightsaber})) / 2) - @{yLightsaber})" disabled="true" ><span></span>
+                                    </td>
+                                    <td>
+                                        <div class="sheet-dice-icon"></div>
+                                        <div class="sheet-dice-input">
+                                            <input type="text" name="attr_diceLightsaber" />
+                                        </div>
+                                    </td>
+                                    <td><button type='roll' name='roll_Lightsaber' value='!eed characterID(@{character_id}) label(skill:Lightsaber) @{diceLightsaber} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankLightsaber}|@{charLightsaber}) @{dicePool} (gmdice)'></button></td>
+                                </tr>
                                 <tr>
                                     <td><label>Brawl (Br)</label>
                                         <div class="sheet-tips">
@@ -2997,7 +3193,7 @@
                                             <input type="text" name="attr_diceBrawl" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Brawl' value='!eed characterID(@{characterID}) label(Brawl) @{diceBrawl} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankBrawl}|@{brawn}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Brawl' value='!eed characterID(@{character_id}) label(skill:Brawl) @{diceBrawl} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankBrawl}|@{brawn}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Gunnery (Agi)</label>
@@ -3029,7 +3225,7 @@
                                             <input type="text" name="attr_diceGunnery" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Gunnery' value='!eed characterID(@{characterID}) label(Gunnery) @{diceGunnery} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankGunnery}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Gunnery' value='!eed characterID(@{character_id}) label(skill:Gunnery) @{diceGunnery} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankGunnery}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Melee (Br)</label>
@@ -3060,7 +3256,7 @@
                                             <input type="text" name="attr_diceMelee" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Melee' value='!eed characterID(@{characterID}) label(Melee) @{diceMelee} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankMelee}|@{brawn}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Melee' value='!eed characterID(@{character_id}) label(skill:Melee) @{diceMelee} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankMelee}|@{brawn}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Ranged - Light  (Ag)</label>
@@ -3091,7 +3287,7 @@
                                             <input type="text" name="attr_diceLight" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Light' value='!eed characterID(@{characterID}) label(Ranged - Light) @{diceLight} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankLight}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Light' value='!eed characterID(@{character_id}) label(skill:Ranged - Light) @{diceLight} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankLight}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Ranged - Heavy (Ag)</label>
@@ -3122,7 +3318,7 @@
                                             <input type="text" name="attr_diceHeavy" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Heavy' value='!eed characterID(@{characterID}) label(Ranged - Heavy) @{diceHeavy} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankHeavy}|@{agility}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Heavy' value='!eed characterID(@{character_id}) label(skill:Ranged - Heavy) @{diceHeavy} encum(@{encumbrancemax}|@{encumbrance}) skill(@{rankHeavy}|@{agility}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -3147,7 +3343,7 @@
                                                 <div class="sheet-help-content">
                                                     <h5>Overview (p85)</h5>
                                                     <ul>
-                                                        <li>Identify a person’s planet of origin without asking, by recognising traits of accent, dress and mannerisms associated with a particular world.</li>
+                                                        <li>Identify a person's planet of origin without asking, by recognising traits of accent, dress and mannerisms associated with a particular world.</li>
                                                         <li>Know what behaviours are considered necessary and polite, as opposed to ones that could be offensive when interacting with someone from a Core World.</li>
                                                         <li>Identify which markets are the best places to sell or purchase a particular cargo (in the Core Worlds). Recognise any worlds where such goods could be illegal.</li>
                                                     </ul>
@@ -3168,7 +3364,7 @@
                                             <input type="text" name="attr_diceCore" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Core' value='!eed characterID(@{characterID}) label(Core Worlds) @{diceCore} skill(@{rankCore}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Core' value='!eed characterID(@{character_id}) label(skill:Core Worlds) @{diceCore} skill(@{rankCore}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Education (Int)</label>
@@ -3182,7 +3378,7 @@
                                                     <ul>
                                                         <li>Identify the best way to proceed when interacting with a government entity.</li>
                                                         <li>Employ basic scientific knowledge in an analysis.</li>
-                                                        <li>Understand any question that doesn’t obviously fall under another knowledge skill.</li>
+                                                        <li>Understand any question that doesn't obviously fall under another knowledge skill.</li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -3201,7 +3397,7 @@
                                             <input type="text" name="attr_diceEducation" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Education' value='!eed characterID(@{characterID}) label(Education) @{diceEducation} skill(@{rankEducation}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Education' value='!eed characterID(@{character_id}) label(skill:Education) @{diceEducation} skill(@{rankEducation}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Lore (Int)</label>
@@ -3233,7 +3429,7 @@
                                             <input type="text" name="attr_diceLore" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Lore' value='!eed characterID(@{characterID}) label(Lore) @{diceLore} skill(@{rankLore}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Lore' value='!eed characterID(@{character_id}) label(skill:Lore) @{diceLore} skill(@{rankLore}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Outer Rim (Int)</label>
@@ -3266,7 +3462,7 @@
                                             <input type="text" name="attr_diceOuter" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Outer' value='!eed characterID(@{characterID}) label(Outer Rim) @{diceOuter} skill(@{rankOuter}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Outer' value='!eed characterID(@{character_id}) label(skill:Outer Rim) @{diceOuter} skill(@{rankOuter}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Underworld (Int)</label>
@@ -3298,7 +3494,7 @@
                                             <input type="text" name="attr_diceUnderworld" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Underworld' value='!eed characterID(@{characterID}) label(Underworld) @{diceUnderworld} skill(@{rankUnderworld}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Underworld' value='!eed characterID(@{character_id}) label(skill:Underworld) @{diceUnderworld} skill(@{rankUnderworld}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><label>Xenology (Int)</label>
@@ -3331,7 +3527,39 @@
                                             <input type="text" name="attr_diceXenology" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_Xenology' value='!eed characterID(@{characterID}) label(Xenology) @{diceXenology} skill(@{rankXenology}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Xenology' value='!eed characterID(@{character_id}) label(skill:Xenology) @{diceXenology} skill(@{rankXenology}|@{intellect}) @{dicePool} (gmdice)'></button></td>
+                                </tr>
+								<tr>
+                                    <td><label>Warfare (Int)</label>
+                                        <div class="sheet-tips">
+                                            <div class="sheet-help-def sheet-help">
+                                                <div class="sheet-icon">
+                                                    <span class="sheet-icon-question">?</span>
+                                                </div>
+                                                <div class="sheet-help-content">
+                                                    <h5>Overview (AoR p136)</h5>
+                                                    <ul>
+                                                        <li>Know of the strategies and tactics of warefare both on the ground and in space.</li>
+                                                        <li>Remembering details about a significant event, organization, or individual who played a role in a galactic struggle.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div><!-- end tip -->
+                                    </td>
+                                    <td><input name='attr_careerskillWarfare' type="checkbox" value="1"></td>
+                                    
+                                    <td><input type="number" name="attr_rankWarfare" max="9" min="0" value="0"/></td>
+                                    <td>
+                                        <input class="sheet-yd" type="hidden" name="attr_yWarfare" value="(((@{intellect} + @{rankWarfare}) - abs(@{intellect} - @{rankWarfare})) / 2)" disabled="true" ><span></span>
+                                        <input class="sheet-gd" type="hidden" name="attr_gWarfare" value="((((@{intellect} + @{rankWarfare}) + abs(@{intellect} - @{rankWarfare})) / 2) - @{yWarfare})" disabled="true" ><span></span>
+                                    </td>
+                                    <td>
+                                        <div class="sheet-dice-icon"></div>
+                                        <div class="sheet-dice-input">
+                                            <input type="text" name="attr_diceWarfare" />
+                                        </div>
+                                    </td>
+                                    <td><button type='roll' name='roll_Warfare' value='!eed characterID(@{character_id}) label(skill:Warfare) @{diceXenology} skill(@{rankWarfare}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <!--<tr>
                                     <td><label>Other:</label></td>
@@ -3343,7 +3571,7 @@
                                         </div>
                                     </td>
                                     <td><input type="number" name="attr_rankOther" max="9" min="0" value="0"/></td>
-                                    <td><button type='roll' name='roll_Other' value='!eed @{diceOther} skill(@{rankOther}|@{intellect}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_Other' value='!eed @{diceOther} skill(@{rankOther}|@{intellect}) @{dicePool} (gmdice)'></button></td>
                                 </tr>-->
                             </tbody>
                         </table>
@@ -3385,7 +3613,7 @@
                                             <input type="text" name="attr_dicecustomskillname1" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_customskillname1' value='!eed characterID(@{characterID}) label(@{customskillname1}) @{dicecustomskillname1} skill(@{rankcustomskillname1}|@{charcustomskillname1}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_customskillname1' value='!eed characterID(@{character_id}) label(skill:@{customskillname1}) @{dicecustomskillname1} skill(@{rankcustomskillname1}|@{charcustomskillname1}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" name="attr_customskillname2" /></td>
@@ -3412,7 +3640,7 @@
                                             <input type="text" name="attr_dicecustomskillname2" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_customskillname2' value='!eed characterID(@{characterID}) label(@{customskillname2}) @{dicecustomskillname2} skill(@{rankcustomskillname2}|@{charcustomskillname2}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_customskillname2' value='!eed characterID(@{character_id}) label(skill:@{customskillname2}) @{dicecustomskillname2} skill(@{rankcustomskillname2}|@{charcustomskillname2}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" name="attr_customskillname3" /></td>
@@ -3439,7 +3667,7 @@
                                             <input type="text" name="attr_dicecustomskillname3" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_customskillname3' value='!eed characterID(@{characterID}) label(@{customskillname3}) @{dicecustomskillname3} skill(@{rankcustomskillname3}|@{charcustomskillname3}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_customskillname3' value='!eed characterID(@{character_id}) label(skill:@{customskillname3}) @{dicecustomskillname3} skill(@{rankcustomskillname3}|@{charcustomskillname3}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" name="attr_customskillname4" /></td>
@@ -3466,7 +3694,7 @@
                                             <input type="text" name="attr_dicecustomskillname4" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_customskillname4' value='!eed characterID(@{characterID}) label(@{customskillname4}) @{dicecustomskillname4} skill(@{rankcustomskillname4}|@{charcustomskillname4}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_customskillname4' value='!eed characterID(@{character_id}) label(skill:@{customskillname4}) @{dicecustomskillname4} skill(@{rankcustomskillname4}|@{charcustomskillname4}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" name="attr_customskillname5" /></td>
@@ -3493,7 +3721,7 @@
                                             <input type="text" name="attr_dicecustomskillname5" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_customskillname5' value='!eed characterID(@{characterID}) label(@{customskillname5}) @{dicecustomskillname5} skill(@{rankcustomskillname5}|@{charcustomskillname5}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_customskillname5' value='!eed characterID(@{character_id}) label(skill:@{customskillname5}) @{dicecustomskillname5} skill(@{rankcustomskillname5}|@{charcustomskillname5}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" name="attr_customskillname6" /></td>
@@ -3520,7 +3748,7 @@
                                             <input type="text" name="attr_dicecustomskillname6" />
                                         </div>
                                     </td>
-                                    <td><button type='roll' name='roll_customskillname6' value='!eed characterID(@{characterID}) label(@{customskillname6}) @{dicecustomskillname6} skill(@{rankcustomskillname6}|@{charcustomskillname6}) @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                    <td><button type='roll' name='roll_customskillname6' value='!eed characterID(@{character_id}) label(skill:@{customskillname6}) @{dicecustomskillname6} skill(@{rankcustomskillname6}|@{charcustomskillname6}) @{dicePool} (gmdice)'></button></td>
                                 </tr>
                             </tbody>
                         </table>    
@@ -3575,12 +3803,115 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        
                         </fieldset>
-                        
                     </div><!-- end sheet-column -->
                     <div class="sheet-clear"></div>
                 </div><!-- end sheet-row -->
+
+                <div class="sheet-row">
+                    <div class="sheet-small-12 sheet-column">
+                        <h3>Force Powers</h3>
+                        <table  class="sheet-talents" cellspacing="0" cellpadding="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th style="width:50%">Name</th>
+                                    <th style="width:50%">Power Summary</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <fieldset class="repeating_powers">
+                        <table class="sheet-talent">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:50%" colspan="5">
+                                            <input type="text" name="attr_forcepowername"/>
+                                        </td>
+                                        <td style="width:50%" rowspan="3">
+                                            <textarea rows="4" type="text" name="attr_powersummary"/></textarea> 
+                                        </td>
+                                        <td rowspan="3">
+                                            <button type='roll' name='roll_force' value='!eed characterID(@{character_id}) label(Force Power: @{forcepowername}) @{forceavalible}w @{dicePool}'></button>     
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Available:</label></td>
+                                        <td><input type="number" name="attr_forceavalible" value="@{forcerating}-@{forcecommitted}" disabled="true"></td>
+                                        <td>
+                                           <!-- <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_powercommited" value="true" title="Free" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_powercommited" value="false" title="Commited">
+                                                <span class="switch-selection"></span>
+                                            </div> -->
+                                        </td>
+                                        <td><label>Page:</label></td>
+                                        <td><input type="text" name="attr_powerpagenum"/></td>
+									</tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="sheet-attachments-wrapper">                            
+                                <input type="checkbox" name="attr_powerupgrades"  class="sheet-view-attachments" />
+                                <label class="sheet-view-attachments">View Upgrades</label>
+                                <div class="sheet-clear"></div>
+                                <table class="sheet-attachments" cellspacing="0" cellpadding="0" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Upgrade</th>
+                                            <th>Level</th>
+                                            <th>Description</th>
+                                        </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!--<tr>
+                                            <td><div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_powermastery" value="false" title="Basic" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_powermastery" value="true" title="Mastery">
+                                                <span class="switch-selection"></span>
+                                            </div></td>
+                                            <td></td>
+                                            <td><textarea rows="3" name='attr_controlpowerdesc1' type="text" /></textarea></td>
+                                        </tr>-->
+                                        <tr>
+                                            <td><input type="text" name='attr_forceupgradetype1'></td>
+                                            <td><input name='attr_controlpowerlevel1' type="number" /></td>
+                                            <td><textarea rows="3" name='attr_controlpowerdesc1' type="text" /></textarea></td>
+                                        </tr>
+                                         <tr>
+                                            <td><input type="text" name='attr_forceupgradetype2'></td>
+                                            <td><input name='attr_magpowerlevel2' type="number" /></td>
+                                            <td><textarea rows="3" name='attr_magpowerdesc2' type="text" /></textarea></td>
+                                        </tr>
+                                         <tr>
+                                            <td><input type="text" name='attr_forceupgradetype3'></td>
+                                            <td><input name='attr_strpowerlevel3' type="number" /></td>
+                                            <td><textarea rows="3" name='attr_strpowerdesc3' type="text" /></textarea></td>
+                                        </tr>
+                                         <tr>
+                                            <td><input type="text" name='attr_forceupgradetype4'></td>
+                                            <td><input name='attr_rangepowerlevel4' type="number" /></td>
+                                            <td><textarea rows="3"  name='attr_rangepowerdesc4' type="text" /></textarea></td>
+                                        </tr>
+                                         <tr>
+                                            <td><input type="text" name='attr_forceupgradetype5'></td>
+                                            <td><input name='attr_rangepowerlevel5' type="number" /></td>
+                                            <td><textarea rows="3"  name='attr_rangepowerdesc5' type="text" /></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name='attr_forceupgradetype6'></td>
+                                            <td><input name='attr_rangepowerlevel6' type="number" /></td>
+                                            <td><textarea rows="3"  name='attr_rangepowerdesc6' type="text" /></textarea></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- end attachment wrapper -->
+                    </div> 
+                </div>  
+                  </fieldset>  
             </div><!-- end sheet-content -->
         
             <div class="sheet-tab-content sheet-tab-weapons">
@@ -3598,22 +3929,22 @@
                                         <td></td>
                                         <td>
                                             <label>Damage</label>
-                                            <input name='attr_damage' type="number" max="99" min="0" value="0"/>
+                                            <input name='attr_damage' type="text" value="0"/>
                                         </td>
                                         <td></td>
                                         <td>
                                             <label>Critical</label>
-                                            <input name='attr_critical' type="number" max="99" min="0" value="0"/>
+                                            <input name='attr_critical' type="text" value="0"/>
                                         </td>
-                                        <td><button type='roll' name='roll_weapon' value='!eed characterID(@{characterID}) label(@{weaponmake}) @{weapondice} encum(@{encumbrancemax}|@{encumbrance}) @{weaponskill} @{weaponcondition} @{dicePool} @{-dicepool|dicepoolgm}'></button></td>
+                                        <td><button type='roll' name='roll_weapon' value='!eed characterID(@{character_id}) label(Weapon:@{weaponmake}|Damage:@{damage}|Critical:@{critical}|Range:@{weaponrange}|Special:@{weaponspecial}) @{weapondice} encum(@{encumbrancemax}|@{encumbrance}) @{weaponskill} @{weaponcondition} @{dicePool} (gmdice)'></button></td>
                                         <td>
                                             <label>Encum</label>
-                                            <input name='attr_encum' type="number" max="99" min="0" value="0"/>
+                                            <input name='attr_encum' type="text" value="0"/>
                                         </td>
                                         <td></td>
                                         <td>
                                             <label>HP</label>
-                                            <input name='attr_hp' type="number" max="99" min="0" value="0"/>
+                                            <input name='attr_hp' type="text" value="0"/>
                                         </td>
                                         <td></td>
                                     </tr>
@@ -3626,14 +3957,6 @@
                                         <td><label>Make / Model:</label></td>
                                         <td><input name='attr_weaponmake' type="text" /></td>
                                         
-                                        <td><label>Weapon Type:</label></td>
-                                        <td><input name='attr_weapontype' type="text" /></td>
-                                        
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><label>Special:</label></td>
-                                        <td><input name='attr_weaponspecial' type="text" /></td>
                                         <td><label>Range:</label></td>
                                         <td>
                                             <select name='attr_weaponrange'>
@@ -3641,35 +3964,47 @@
                                                 <option value="Short">Short</option>
                                                 <option vaule="Medium">Medium</option>
                                                 <option value="Long">Long</option>
+                                                <option value="Extreme">Extreme</option>
                                             </select> 
                                         </td>
+                                        
+                                        
                                     </tr>
                                     <tr>
-                                        <td><label>Dice:</label></td>
-                                        <td><input name='attr_weapondice' type="text" /></td>
+                                        <td><label>Weapon Type:</label></td>
+                                        <td><input name='attr_weapontype' type="text" /></td>
+                                        
                                         <td><label>Skill:</label></td>
                                         <td>
-                                             <select name='attr_weaponskill'>
+                                             <select name='attr_weaponskill'> 
                                                 <option value="skill(@{rankBrawl}|@{brawn})">Brawl</option>
                                                 <option value="skill(@{rankGunnery}|@{agility})">Gunnery</option>
                                                 <option value="skill(@{rankMelee}|@{brawn})">Melee</option>
                                                 <option value="skill(@{rankLight}|@{agility})">Ranged - Light</option>
                                                 <option value="skill(@{rankHeavy}|@{agility})">Ranged - Heavy</option>
+                                                <option value="skill(@{rankLightsaber}|@{charLightsaber})">Lightsaber</option>
+                                            </select> 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Special:</label></td>
+                                        <td ><input name='attr_weaponspecial' type="text"  /></td>
+                                        
+                                        <td><label>Condition:</label></td>
+                                        <td>
+                                              <select name='attr_weaponcondition'>
+                                                <option value="">New</option>
+                                                <option value="1blk">Minor</option>
+                                                <option value="1p">Moderate</option>
+                                                <option value="unusableWeapon">Major</option>
                                             </select> 
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">&nbsp;</td>
-                                        <td><label>Condition:</label></td>
-                                        <td>
-                                             <select name='attr_weaponcondition'>
-                                                <option value="">New</option>
-                                                <option value="1p">Minor</option>
-                                                <option vaule="2p">Moderate</option>
-                                                <option value="3p">Major</option>
-                                            </select> 
-                                        </td>
                                         
+                                        <td><label>Dice:</label></td>
+                                        <td><input name='attr_weapondice' type="text" /></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -3678,6 +4013,7 @@
                             
                                 <input type="checkbox" name="attr_weaponattchments"  class="sheet-view-attachments" />
                                 <label class="sheet-view-attachments">View Attachments</label>
+                                
                                 <div class="sheet-clear"></div>
                                 <table class="sheet-attachments" cellspacing="0" cellpadding="0" border="0">
                                     <thead>
@@ -3779,10 +4115,22 @@
     
             </div><!-- sheet-content -->
 
-        
+			<div class="sheet-tab-content sheet-tab-notes">
+				<div class="sheet-row">
+                    <div class="sheet-small-12 sheet-column">                      
+                        <h3>Notes</h3><br/>
+						<tbody>
+                                <tr>
+                                    <td>
+                                        <textarea rows="50" name="attr_notes"></textarea>    
+                                    </td>
+                                </tr>
+                        </tbody>
+						
+					</div>
+				</div>
+				</div>
 
-    
-    
     
     
     
@@ -3790,6 +4138,1062 @@
                 <!-- END Player Character Sheet -->    
 </div><!-- sheet-content -->
 
+<div class="sheet-tab-content sheet-tab-ship-sheet">
+               
+    <div class="sheet-row">
+        <div class="sheet-small-12 sheet-column">
+            <table class="sheet-ship" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td class="sheet-ship-char-bg">
+                        <label>Silhouette</label>
+                        <input name='attr_silhouette' type="number" max="99" min="0" value="0"/>
+                    </td>
+                    <td class="sheet-ship-char-thre-bg-speed">
+                        <label class="sheet-label-title">Speed</label>
+                        <input name="attr_speed" type="number" max="99" min="-99" value="0"/>
+                        <input name="attr_speed_current" type="number" max="99" min="-99" value="0"/><br/>
+                        <label class="sheet-label-threshold-speed">Max</label>
+                        <label class="sheet-label-current-speed">Current</label>
+                    </td>
+                    <td class="sheet-ship-char-bg">
+                        <label>Handling</label>
+                        <input name='attr_handling' type="number" max="99" min="0" value="0"/>
+                    </td>
+                    <td rowspan="2" class="sheet-ship-defense">
+                        <div style="width:302px; height:1px;"></div>
+                        <label class="sheet-def-label">Defense</label>
+                        <div class="sheet-fore">
+                            <label>Fore</label>
+                            <input name='attr_deffore' type="number" max="99" min="0" value="0"/>
+                        </div>
+                        <div class="sheet-starboard">
+                            <label>Starboard</label>
+                            <input name='attr_defstarboard' type="number" max="99" min="0" value="0"/>
+                        </div>
+                        <div class="sheet-aft">
+                            <label>Aft</label>
+                            <input name='attr_defaft' type="number" max="99" min="0" value="0"/>
+                        </div>
+                        <div class="sheet-port">
+                            <label>Port</label>
+                            <input name='attr_defport' type="number" max="99" min="0" value="0"/>
+                        </div>
+                        
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="sheet-ship-char-thre-bg">
+                        <label class="sheet-label-title">Armor</label>
+                        <input name="attr_ship_armor" type="number" max="99" min="-99" value="0"> 
+                    </td>
+                    <td class="sheet-ship-char-thre-bg">
+                        <label class="sheet-label-title">Hull Trauma</label>
+                        <input name="attr_hull_trauma_max" type="number" max="99" min="-99" value="0"/>
+                        <input name="attr_hull_trauma" type="number" max="99" min="-99" value="0"/><br/>
+                        <label class="sheet-label-threshold">Threshold</label>
+                        <label class="sheet-label-current">Current</label>
+                    </td>
+                    <td class="sheet-ship-char-thre-bg">
+                        <label class="sheet-label-title">Sys Strain</label>
+                        <input name="attr_system_strain_max" type="number" max="99" min="-99" value="0"/>
+                        <input name="attr_system_strain" type="number" max="99" min="-99" value="0"/><br/>
+                        <label class="sheet-label-threshold">Threshold</label>
+                        <label class="sheet-label-current">Current</label>
+                    </td>
+                </tr>
+            </table>
+        </div><!-- end column -->
+        <div class="sheet-clear"></div>
+    </div><!-- end row -->
+    
+    <div class="sheet-row sheet-section-1" style="display:none">
+
+         <div class="sheet-small-12 sheet-column">
+
+             <h3 class="sheet-section-header">Dice Pool</h3>
+     
+             <table class="sheet-dice-pool" cellspacing="0" cellpadding="0" border="0">
+                 <tbody>
+                     <tr>
+                         <td class="sheet-light"><img src="http://galacticcampaigns.com/images/EotE/Boost/boostBlank.png"/><input name="attr_bship" type="number" step="1" max="9" min="-9" value="0"></td>
+                         <td class="sheet-light"><img src="http://galacticcampaigns.com/images/EotE/Ability/abilityBlank.png"/><input name="attr_gship" type="number" step="1" max="9" min="-9" value="0"></td>
+                         <td class="sheet-light"><img src="http://galacticcampaigns.com/images/EotE/Proficiency/ProficiencyBlank.png"/><input name="attr_yship" type="number" step="1" max="9" min="-9" value="0"></td>
+                         <td class="sheet-force"><img src="http://galacticcampaigns.com/images/EotE/Force/ForceL.png"/><input name="attr_wship" type="number" step="1" max="9" min="-9" value="0"></td>
+                         <td class="sheet-dark"><img src="http://galacticcampaigns.com/images/EotE/Setback/SetBackBlank.png"/><input name="attr_blkship" type="number" step="1" max="9" min="-9" value="0"></td>
+                         <td class="sheet-dark"><img src="http://galacticcampaigns.com/images/EotE/Difficulty/DifficultyBlank.png"/><input name="attr_pship" type="number" step="1" max="9" min="-9" value="0"></td>
+                         <td class="sheet-dark"><img src="http://galacticcampaigns.com/images/EotE/Challenge/ChallengeBlank.png"/><input name="attr_rship" type="number" step="1" max="9" min="-9" value="0"></td>
+                     </tr>
+                     <tr>
+                         <td colspan="3" class="sheet-upgrade sheet-light">
+                             <label>&nbsp;&nbsp;&nbsp;&nbsp;Upgrade:
+                                 <input name="attr_upgradeAbilityship" type="number" step="1" max="9" min="0" value="0" >
+                             </label>
+                             <label>
+                                 <input name="attr_downgradeProficiencyship" type="number" step="1" max="9" min="0" value="0" >
+                                 :Downgrade
+                             </label>  
+                         </td>
+                         <td class="sheet-force">
+                                 
+                             <input type="hidden" name="attr_dicePoolship"  value=" @{gship}g @{yship}y @{pship}p @{rship}r @{bship}b @{blkship}blk @{wship}w upgrade(ability|@{upgradeAbilityship}) downgrade(proficiency|@{downgradeProficiencyship}) upgrade(difficulty|@{upgradeDifficultyship}) downgrade(challenge|@{downgradeChallengeship})"/>
+                             <button type='roll' name='roll_DicePoolship' value='!eed @{dicePoolship}'></button>
+                                 
+                         </td>
+                         <td colspan="3" class="sheet-downgrade sheet-dark">
+                             <label>&nbsp;&nbsp;&nbsp;&nbsp;Upgrade:
+                                 <input name="attr_upgradeDifficultyship" type="number" step="1" max="9" min="0" value="0" >
+                             </label>
+                             <label>
+                                 <input name="attr_downgradeChallengeship" type="number" step="1" max="9" min="0" value="0" >
+                                 Downgrade:
+                             </label>
+                         </td>
+                     </tr>
+                 </tbody>
+             </table>
+         
+         </div><!-- end-column -->
+         <div class="sheet-clear"></div>
+    </div><!-- end row -->
+    
+    <input type="radio" name="attr_v-sheet" class="sheet-tab sheet-tab-v-details" value="1" title="Details" checked="checked" />
+    <input type="radio" name="attr_v-sheet" class="sheet-tab sheet-tab-v-weapons" value="2" title="Crew &amp; Weapons" />
+
+    <div class="sheet-tab-content sheet-tab-v-details">   
+        <div class="sheet-row">
+            <div class="sheet-small-12 sheet-column">
+                
+                <br/>
+                <input type="radio" name="attr_opt-vehicle-ship" class="sheet-opt sheet-opt-vehicle" value="1" title="Vehicle" checked="checked" />
+                <input type="radio" name="attr_opt-vehicle-ship" class="sheet-opt sheet-opt-ship" value="2" title="Ship"  />
+                <br/><br/>
+        
+                <h3 class="sheet-section-header">Details</h3>
+                
+               
+                <table  cellspacing="0" cellpadding="0" border="0" >
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Name:</label>
+                            </td>
+                            <td>
+                                <input name="attr_v-s-name" type="text" />
+                            </td>
+                            <td>
+                                <label>Hard Points:</label>
+                            </td>
+                            <td>
+                                <input name="attr_hard-points" type="text" />
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td class="sheet-opt-content sheet-opt-vehicle">
+                                <label>Vehicle Type/Model:</label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-vehicle">
+                                <input name="attr_vehicle-type-model" type="text" />
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <label>Hull Type/Class:</label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <input name="attr_hull-type-class" type="text" />
+                            </td>
+                            <!-- ------------------------------------------- -->
+                            <td>
+                                <label>Sensor Range:</label>
+                            </td>
+                            <td>
+                                <select name="attr_sensor-range" >
+                                    <option value="none">None</option>
+                                    <option value="Close">Close</option>
+                                    <option value="Short">Short</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Long">Long</option>
+                                    <option value="Extreme">Extreme</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Manufacturer:</label>
+                            </td>
+                            <td>
+                                <input name="attr_manufacturer" type="text" />
+                            </td>
+                            <td>
+                                <label>Encumbrance Capacity:</label>
+                            </td>
+                            <td>
+                                <input name="attr_encum-capacity" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Passenger Capacity:</label>
+                            </td>
+                            <td>
+                                <input name="attr_pass-capacity" type="text" />
+                            </td>
+                            <!-- ------------ -->
+                            <td class="sheet-opt-content sheet-opt-vehicle">
+                                <label>Maximum Altitude:</label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-vehicle">
+                                <input name="attr_vehicle-max-altiude" type="text" />
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <label>Navicomputer: </label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <input name="attr_ship-navicomputer" type="checkbox" value="1" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="sheet-opt-content sheet-opt-vehicle">
+                                <label>Crew:</label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-vehicle">
+                                <input name="attr_vehicle-crew" type="text" />
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-vehicle" colspan="2">
+                                &nbsp;
+                            </td>
+                            <!-- ------------ -->
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <label>Ship's Complement:</label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <input name="attr_ships-complement" type="text" />
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <label>Hyperdrive Primary Class:</label>
+                            </td>
+                            <td class="sheet-opt-content sheet-opt-ship">
+                                <input name="attr_hyperdrive-primary" type="text" />
+                            </td>
+                            
+                        </tr>
+                        <tr class="sheet-opt-content sheet-opt-ship">
+                            <td>
+                                <label>Consumables:</label>
+                            </td>
+                            <td>
+                                <input name="attr_ship-consumables" type="text" />
+                            </td>
+                            <td>
+                                <label>Hyperdrive Backup Class:</label>
+                            </td>
+                            <td>
+                                <input name="attr_hyperdrive-backup" type="text" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+            </div><!-- end column -->
+            <div class="sheet-clear"></div>
+        </div><!-- end row -->
+        
+                        <div class="sheet-row sheet-show-critical-table">
+                    <div class="sheet-small-12 sheet-column">
+                        
+                        <!-- -------------------------------------------------- Critical  -->
+                        
+                        <h3 class="sheet-section-header">Vehicle Critical</h3>
+                        
+                    </div><!-- column -->
+                    
+                    <div class="sheet-small-9 sheet-column">
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn1" value="1" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName1" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange1" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice1" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity1"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea row="3" name="attr_critShipSummary1" readonly="readonly" ></textarea>
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect1" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect1" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn1})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn2" value="2" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName2"  readonly="readonly"  />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange2"  readonly="readonly"  />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice2" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity2"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary2" readonly="readonly"  /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect2" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect2" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn2})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn3" value="3" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName3"  readonly="readonly"  />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange3"  readonly="readonly"  />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice3" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity3"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary3"  readonly="readonly"  /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect3" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect3" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn3})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn4" value="4" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName4" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange4" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice4" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity4"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary4" readonly="readonly" /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect4" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect4" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn4})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn5" value="5" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName5" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange5" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice5" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity5" /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary5" readonly="readonly" /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect5" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect5" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn5})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn6" value="6" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName6" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange6" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice6" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity6" /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary6" readonly="readonly" /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect6" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect6" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn6})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn7" value="7" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName7" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange7" readonly="readonly"  />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice7" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity7"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary7" readonly="readonly" /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect7" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect7" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn7})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn8" value="8" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName8" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange8" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice8" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity8"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary8" readonly="readonly" /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect8" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect8" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn8})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn9" value="9" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName9" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange9" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice9" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity9"  /><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary9" readonly="readonly" /></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect9" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect9" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn9})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn10" value="10" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName10" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange10" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice10" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity10"/><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary10" readonly="readonly"/></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect10" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect10" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn10})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn11" value="11" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName11" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange11" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice11" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity11"/><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary11" readonly="readonly"/></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect11" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect11" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn11})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn12" value="12" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName12" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange12" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice12" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity12"/><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary12" readonly="readonly"/></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect12" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect12" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn12})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn13" value="13" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName13" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange13" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice13" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity13"/><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary13" readonly="readonly"/></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect13" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect13" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn13})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn14" value="14" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName14" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange14" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice14" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity14"/><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary14" readonly="readonly"/></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect14" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect14" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn14})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input type="checkbox" class="sheet-checkbox-criton" name="attr_critShipOn15" value="15" />
+                            <table  class="sheet-critical" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td width="70%">
+                                            <input type="text" name="attr_critShipName15" readonly="readonly" />
+                                        </td>
+                                        <td width="30%">
+                                            <input type="text" name="attr_critShipRange15" readonly="readonly" />
+                                        </td>
+                                        <td class="sheet-crit-dice-bg">
+                                            <input type="hidden" name="attr_critShipDice15" />
+                                            <input class="sheet-pd" value="4" type="hidden" name="attr_critShipSeverity15"/><span></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="2">
+                                            <textarea rows="3" type="text" name="attr_critShipSummary15" readonly="readonly"/></textarea> 
+                                        </td>
+                                        <td>
+                                            <label>Effect:</label>
+                                            <div class="sheet-switch">
+                                                <input type="radio" class="sheet-switch-input-on" name="attr_critShipEffect15" value="on" title="On" checked="checked">
+                                                <input type="radio" class="sheet-switch-input-off" name="attr_critShipEffect15" value="off" title="Off">
+                                                <span class="switch-selection"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="roll" class="sheet-btn-heal-crit" value="!eed characterID(@{character_id}) critship(heal|@{critShipOn15})" />Repair</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        
+                    </div><!-- column -->
+                    
+                    <div class="sheet-small-3 sheet-column">
+                        
+                        <table  class="sheet-roll-critical" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label>Critcal roll offset:</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="attr_critShipAddOffset" value="" />
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="roll" class="sheet-btn-roll-crit" value="!eed characterID(@{character_id}) critship(roll)" />Roll Critical</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Critical number:</label>
+                                        <input type="text" name="attr_critShipAddRangeNum" value="" />
+                                    </td>
+                                    <td valign="bottom">
+                                        <button type="roll" class="sheet-btn-add-crit" value="!eed characterID(@{character_id}) critship(add|@{critShipAddRangeNum})" />Add Critical</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                                    
+                    
+                    </div><!-- column -->
+                    <div class="sheet-clear"></div>
+                </div><!-- end row -->
+        
+        
+             
+        <div class="sheet-row">    
+            <div class="sheet-small-12 sheet-column">
+                
+                <h3 class="sheet-section-header">Cargo Hold</h3>
+                
+                <table  cellspacing="0" cellpadding="0" border="0" >
+                    <tbody>
+                        <tr>
+                            <td>
+                                <textarea name="attr_carho-hold" rows="6"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+            <div class="sheet-clear"></div>
+        </div><!-- end row -->
+        
+        <div class="sheet-row"> 	 	
+            <div class="sheet-small-12 sheet-column"> 	 	
+                <h3 class="sheet-section-header">Attachments</h3> 	 	
+                    
+                <table cellspacing="0" cellpadding="0" border="0"> 	 	
+                    <thead> 	 	
+                        <th style="width:25%">Name</th> 	 	
+                        <th style="width:25%">Hard points</th> 	 	
+                        <th style="width:25%">Base Modifiers</th> 	 	
+                        <th style="width:25%">Modifications</th> 	 	
+                    </thead> 	 	
+                </table> 	 	
+                            
+                <fieldset class="repeating_shipAttachments"> 	 	
+                                        
+                    <table cellspacing="0" cellpadding="0" border="0"> 	 	
+                        <tbody> 	 	
+                            <tr> 	 	
+                                <td style="width:25%"><input name='attr_shipAttachName' type="text" /></td> 	 	
+                                <td style="width:25%"><input name='attr_shipAttachHP' type="text" /></td> 	 	
+                                <td style="width:25%"><input name='attr_shipAttachBaseMod' type="text" /></td> 	 	
+                                <td style="width:25%"><input name='attr_shipAttachMod' type="text" /></td> 	 	
+                            </tr>             	 	
+                        </tbody> 	 	
+                    </table> 	 	
+                            
+                 </fieldset> 	 	
+                        
+            </div> 	 	
+            <div class="sheet-clear"></div> 	 	
+        </div><!-- end row --> 
+        
+        
+    </div><!-- end tab v-details -->
+        
+    <div class="sheet-tab-content sheet-tab-v-weapons">   
+        
+        <br/>
+        <h3 class="sheet-section-header">Crew Roles</h3>
+            
+            <table cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <th style="width:180px;">Character Name</th>
+                    <th style="width:180px;">Role <span style="font-size:10px">(Pilot, Co-pilot, Engineer)</span></th>
+                    <th><span style="float:left">Dice</span>
+                        <div class="sheet-tips">
+                            <div class="sheet-help-def sheet-help">
+                                <div class="sheet-icon">
+                                    <span class="sheet-icon-question">?</span>
+                                </div>
+                                <div class="sheet-help-content">
+                                    <h5>Adding Dice</h5>
+                                    <p>To add additional dice write
+                                    the number of dice and color
+                                    letter you want to roll.</p> 
+                                    <p>Example: <b>2b</b> outputs <span class="sheet-icon-B"></span><span class="sheet-icon-B"></span></p> 
+                                    <p>Example: <b>1b 1g</b> outputs <span class="sheet-icon-B"></span><span class="sheet-icon-G"></span></p>    
+                                    <p> b -> Blue = Boost<br/>
+                                        g -> Green = Ability<br/>
+                                        y -> Yellow = Proficiency<br/>
+                                        blk -> BLack = Setback<br/>
+                                        p -> Purple = Difficulty<br/>
+                                        r -> Red = Challenge<br/>
+                                        w -> White = Force<br/>
+                                    </p> 
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th>Special</th>
+                    <th colspan="2">Skill</th>
+                </thead>
+            </table>
+            
+            <fieldset class="repeating_shipCrewRoles">
+                            
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="width:180px;"><input name='attr_shipRoleCharacterName' type="text" /></td>
+                            <td style="width:180px;"><input name='attr_shipRoleName' type="text" /></td>
+                            <td><input name='attr_shipRoleDice' type="text"  /></td>
+                            <td><input name='attr_shipRoleSpecial' type="text"  /></td>
+                            <td>
+                                <select name='attr_shipRoleSkill'>
+                                    
+                                    <!--brawn agility intellect cunning willpower presence -->
+                                    <option value="" disabled="true">Skills</option>
+                                    <option value="skill:intellect,rankAstrogation">&nbsp;&nbsp;&nbsp;&nbsp;Astrogation</option>
+                                    <option value="skill:brawn,rankAthletics">&nbsp;&nbsp;&nbsp;&nbsp;Athletics</option>
+                                    <option value="skill:presence,rankCoercion">&nbsp;&nbsp;&nbsp;&nbsp;Coercion</option>
+                                    <option value="skill:intellect,rankComputers">&nbsp;&nbsp;&nbsp;&nbsp;Computers</option>
+                                    <option value="skill:presence,rankCool">&nbsp;&nbsp;&nbsp;&nbsp;Cool</option>
+                                    <option value="encum|skill:agility,rankCoordination">&nbsp;&nbsp;&nbsp;&nbsp;Coordination</option>
+                                    <option value="skill:cunning,rankDeception">&nbsp;&nbsp;&nbsp;&nbsp;Deception</option>
+                                    <option value="skill:willpower,rankDiscipline">&nbsp;&nbsp;&nbsp;&nbsp;Discipline</option>
+                                    <option value="skill:presence,rankLeadership">&nbsp;&nbsp;&nbsp;&nbsp;Leadership</option>
+                                    <option value="skill:intellect,rankMechanics">&nbsp;&nbsp;&nbsp;&nbsp;Mechanics</option>
+                                    <option value="skill:intellect,rankMedicine">&nbsp;&nbsp;&nbsp;&nbsp;Medicine</option>
+                                    <option value="skill:presence,rankNegotiation">&nbsp;&nbsp;&nbsp;&nbsp;Negotiation</option>
+                                    <option value="skill:cunning,rankPerception">&nbsp;&nbsp;&nbsp;&nbsp;Perception</option>
+                                    <option value="encum|skill:agility,rankPlanetary">&nbsp;&nbsp;&nbsp;&nbsp;Piloting - Planetary</option>
+                                    <option value="encum|skill:agility,rankSpace">&nbsp;&nbsp;&nbsp;&nbsp;Piloting - Space</option>
+                                    <option value="skill:brawn,rankResilience">&nbsp;&nbsp;&nbsp;&nbsp;Resilience</option>
+                                    <option value="skill:cunning,rankSkulduggery">&nbsp;&nbsp;&nbsp;&nbsp;Skulduggery</option>
+                                    <option value="encum|skill:agility,rankStealth">&nbsp;&nbsp;&nbsp;&nbsp;Stealth</option>
+                                    <option value="skill:cunning,rankStreetwise">&nbsp;&nbsp;&nbsp;&nbsp;Streetwise</option>
+                                    <option value="skill:cunning,rankSurvival">&nbsp;&nbsp;&nbsp;&nbsp;Survival</option>
+                                    <option value="skill:willpower,rankVigilance">&nbsp;&nbsp;&nbsp;&nbsp;Vigilance</option>
+                                    <option value="" disabled="true">Combat Skills</option>
+                                    <option value="skill:brawn,rankBrawl">&nbsp;&nbsp;&nbsp;&nbsp;Brawl</option>
+                                    <option value="encum|skill:agility,rankGunnery">&nbsp;&nbsp;&nbsp;&nbsp;Gunnery</option>
+                                    <option value="skill:brawn,rankMelee">&nbsp;&nbsp;&nbsp;&nbsp;Melee</option>
+                                    <option value="encum|skill:agility,rankLight">&nbsp;&nbsp;&nbsp;&nbsp;Ranged - Light</option>
+                                    <option value="encum|skill:agility,rankHeavy">&nbsp;&nbsp;&nbsp;&nbsp;Ranged - Heavy</option>
+                                    <option value="" disabled="true">Knowledge Skills</option>
+                                    <option value="skill:intellect,rankCore">&nbsp;&nbsp;&nbsp;&nbsp;Core Worlds</option>
+                                    <option value="skill:intellect,rankEducation">&nbsp;&nbsp;&nbsp;&nbsp;Education</option>
+                                    <option value="skill:intellect,rankLore">&nbsp;&nbsp;&nbsp;&nbsp;Lore</option>
+                                    <option value="skill:intellect,rankOuter">&nbsp;&nbsp;&nbsp;&nbsp;Outer Rim</option>
+                                    <option value="skill:intellect,rankUnderworld">&nbsp;&nbsp;&nbsp;&nbsp;Underworld</option>
+                                    <option value="skill:intellect,rankXenology">&nbsp;&nbsp;&nbsp;&nbsp;Xenology</option>
+                                    <option value="skill:intellect,rankWarfare">&nbsp;&nbsp;&nbsp;&nbsp;Warfare</option>
+
+                                </select> 
+                            </td>
+                            <td><button type='roll' name='roll_shipRole' value='!eed rollPlayer(character:@{shipRoleCharacterName}|@{shipRoleSkill}) label(Role:@{shipRoleName}|Special:@{shipRoleSpecial}) @{shipRoleDice} @{dicePool} (gmdice)'></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        
+        
+        <br/>
+        <h3 class="sheet-section-header">Weapons</h3>
+            
+
+            <fieldset class="repeating_shipWeapons">
+                            
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <thead>
+                        <tr>
+                            <th>Character Name</th>
+                            <th>Weapon Name</th>
+                            <th>Arc</th>
+                            <th>Crit</th>
+                            <th>Dmg</th>
+                            <th colspan="2">Range/Skill</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input name='attr_shipWeaponCharacterName' type="text" /></td>
+                            <td><input name='attr_shipWeaponName' type="text" /></td>
+                            <td class="sheet-firearc-field">
+                                <input name='attr_fireArcFore' type="checkbox" class="sheet-fireArcFore" Title="Fore"/>
+                                <input name='attr_fireArcStarboard' type="checkbox" class="sheet-fireArcStarboard" Title="Starboard"/>
+                                <input name='attr_fireArcAft' type="checkbox" class="sheet-fireArcAft" Title="Aft"/>
+                                <input name='attr_fireArcPort' type="checkbox" class="sheet-fireArcPort" Title="Port"/>
+                                <span class="sheet-fireArcForeImg"></span>
+                                <span class="sheet-fireArcStarboardImg"></span>
+                                <span class="sheet-fireArcAftImg"></span>
+                                <span class="sheet-fireArcPortImg"></span>
+                                
+                            </td>
+                            <td style="width:50px"><input name='attr_shipWeaponCrit' type="number" max="99" min="-99" value="0" /></td>
+                            <td style="width:50px"><input name='attr_shipWeaponDmg' type="number" max="99" min="-99" value="0" /></td>
+                            <td style="width:150px">
+                                <select name='attr_shipWeaponRange'>
+                                    <option value="Close">Close</option>
+                                    <option value="Short">Short</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Long">Long</option>
+                                    <option value="Extreme">Extreme</option>
+                                </select> 
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label style="display:inline-block; width:25%;">Dice:</label><input style="display:inline-block; width:74%;" name='attr_shipWeaponDice' type="text" />
+                            </td>
+                            <td colspan="4">
+                                <label style="display:inline-block; width:25%;">Special:</label><input style="display:inline-block; width:74%;" name='attr_shipWeaponSpecial' type="text" />
+                            </td>
+                            <td>
+                                <select name='attr_shipWeaponSkill'> 
+                                    <option value="skill:agility,rankGunnery">Gunnery</option>
+                                    <option value="skill:agility,rankHeavy">Ranged - Heavy</option>
+                                </select> 
+                            </td>
+                            <td><button type='roll' name='roll_shipWeapon' value='!eed rollPlayer(character:@{shipWeaponCharacterName}|encum|@{shipWeaponSkill}) label(Weapon:@{shipWeaponName}|Damage:@{shipWeaponDmg}|Critical:@{shipWeaponCrit}|Range:@{shipWeaponRange}|Special:@{shipWeaponSpecial}) @{shipWeaponDice} @{dicePool} (gmdice)'></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+                        
+            
+            
+        
+    
+    </div><!-- end tab v-weapons -->
+    
+</div><!-- end sheet tab ship -->
 
 <div class="sheet-tab-content sheet-tab-gm-dice"><!-- GM Dice Pool  -->
             
@@ -3824,7 +5228,8 @@
                                  
                              <input type="hidden" name="attr_dicePoolgm"  value=" @{ggm}g @{ygm}y @{pgm}p @{rgm}r @{bgm}b @{blkgm}blk @{wgm}w upgrade(ability|@{upgradeAbilitygm}) downgrade(proficiency|@{downgradeProficiencygm}) upgrade(difficulty|@{upgradeDifficultygm}) downgrade(challenge|@{downgradeChallengegm})"/>
                              <button type='roll' name='roll_DicePoolgm' value='!eed @{dicePoolgm}'></button>
-                                 
+                             <button type='roll' name='roll_ResetGMDicePool' value='!eed resetgmdice characterID(@{character_id})'></button>
+   
                          </td>
                          <td colspan="3" class="sheet-downgrade sheet-dark">
                              <label>&nbsp;&nbsp;&nbsp;&nbsp;Upgrade:
@@ -3842,6 +5247,13 @@
          </div><!-- end-column -->
          <div class="sheet-clear"></div>
     </div><!-- end sheet-row -->
+    
+    <!--<input type="radio" name="attr_gm-sheet" class="sheet-tab sheet-tab-gm-weapons" value="1" title="Weapons" checked="checked" />
+    <input type="radio" name="attr_gm-sheet" class="sheet-tab sheet-tab-gm-adversaries" value="2" title="Adversaries" />
+    <input type="radio" name="attr_gm-sheet-unlock" value="unlock" style="display:none" />-->
+    
+    
             
 </div><!-- sheet-content -->
-    
+  
+  
